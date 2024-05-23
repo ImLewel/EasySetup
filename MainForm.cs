@@ -1,8 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
-using System;
 using System.Diagnostics;
-using System.Net;
-using System.Security.Policy;
 
 namespace EasySetup
 {
@@ -11,6 +8,8 @@ namespace EasySetup
     SqliteConnection con;
     string dbFile = "data.db";
     string downloadPath = @"Downloaded\";
+    static readonly HttpClient client = new HttpClient();
+
     public MainForm()
     {
       InitializeComponent();
@@ -64,10 +63,16 @@ namespace EasySetup
 
     private async Task Download(Uri path, string outputName)
     {
-      using (WebClient client = new WebClient())
+      using (var stream = await client.GetStreamAsync(path))
       {
-        await client.DownloadFileTaskAsync(path, downloadPath + outputName);
+        using (var fs = new FileStream(outputName, FileMode.CreateNew))
+        {
+          await stream.CopyToAsync(fs);
+          fs.Close();
+        }
+        stream.Close();
       }
+
     }
 
     private async Task Install(string url, string name)
@@ -78,34 +83,42 @@ namespace EasySetup
       Uri path = new Uri(url);
       //Get extension of the file
       string ext = Path.GetExtension(path.AbsolutePath);
-      //Make sure we won't install or download the same file again
-      if (!File.Exists(downloadPath + name + ext))
+      if (ext is null || ext == String.Empty)
       {
-        await Download(path, name + ext);
+        ext = ".exe";
+      }
+
+      string storedFile = downloadPath + name + ext;
+
+      //Make sure we won't install or download the same file again
+      if (!File.Exists(storedFile))
+      {
+        await Download(path, storedFile);
+        //For future purpose: ability to specify some arguments
+        //of installation (silent, verbose, etc)
         string args = String.Empty;
-        /////TODODODOODOsss
         try
         {
           Process installProcess = new Process
           {
             StartInfo = new ProcessStartInfo
             {
-              FileName = downloadPath,
-              Arguments = "/S",
+              FileName = storedFile,
+              //Arguments = args,
               UseShellExecute = true
             }
           };
           installProcess.Start();
           await Task.Run(() => installProcess.WaitForExit());
         }
-        catch (Exception ex)
+        catch
         {
           MessageBox.Show($"Something went wrong with {name} setup process");
         }
       }
     }
 
-    private async void button1_Click(object sender, EventArgs e)
+    private async void ConfirmButton_Click(object sender, EventArgs e)
     {
       var checkedListBoxes = GetAll(this, typeof(CheckedListBox));
       foreach (var checkedListBox in checkedListBoxes)
@@ -129,5 +142,6 @@ namespace EasySetup
         }
       }
     }
+
   }
 }

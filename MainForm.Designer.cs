@@ -37,7 +37,7 @@
       Utils = new CheckedListBox();
       label3 = new Label();
       Coding = new CheckedListBox();
-      button1 = new Button();
+      ConfirmButton = new Button();
       HeaderPanel.SuspendLayout();
       SuspendLayout();
       // 
@@ -142,25 +142,25 @@
       Coding.Size = new Size(150, 193);
       Coding.TabIndex = 6;
       // 
-      // button1
+      // ConfirmButton
       // 
-      button1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-      button1.BackColor = SystemColors.ActiveCaptionText;
-      button1.Dock = DockStyle.Bottom;
-      button1.FlatAppearance.BorderColor = Color.White;
-      button1.FlatAppearance.BorderSize = 2;
-      button1.FlatAppearance.MouseOverBackColor = Color.Silver;
-      button1.FlatStyle = FlatStyle.Flat;
-      button1.Font = new Font("Consolas", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
-      button1.ForeColor = SystemColors.ControlLightLight;
-      button1.Location = new Point(0, 676);
-      button1.Margin = new Padding(3, 3, 3, 6);
-      button1.Name = "button1";
-      button1.Size = new Size(545, 44);
-      button1.TabIndex = 8;
-      button1.Text = "Download and setup";
-      button1.UseVisualStyleBackColor = false;
-      button1.Click += button1_Click;
+      ConfirmButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+      ConfirmButton.BackColor = SystemColors.ActiveCaptionText;
+      ConfirmButton.Dock = DockStyle.Bottom;
+      ConfirmButton.FlatAppearance.BorderColor = Color.White;
+      ConfirmButton.FlatAppearance.BorderSize = 2;
+      ConfirmButton.FlatAppearance.MouseOverBackColor = Color.Silver;
+      ConfirmButton.FlatStyle = FlatStyle.Flat;
+      ConfirmButton.Font = new Font("Consolas", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
+      ConfirmButton.ForeColor = SystemColors.ControlLightLight;
+      ConfirmButton.Location = new Point(0, 676);
+      ConfirmButton.Margin = new Padding(3, 3, 3, 6);
+      ConfirmButton.Name = "ConfirmButton";
+      ConfirmButton.Size = new Size(545, 44);
+      ConfirmButton.TabIndex = 8;
+      ConfirmButton.Text = "Download and setup";
+      ConfirmButton.UseVisualStyleBackColor = false;
+      ConfirmButton.Click += ConfirmButton_Click;
       // 
       // MainForm
       // 
@@ -168,7 +168,7 @@
       AutoScaleMode = AutoScaleMode.Font;
       BackColor = SystemColors.ControlText;
       ClientSize = new Size(545, 720);
-      Controls.Add(button1);
+      Controls.Add(ConfirmButton);
       Controls.Add(label3);
       Controls.Add(Coding);
       Controls.Add(label2);
@@ -196,6 +196,6 @@
     private CheckedListBox Utils;
     private Label label3;
     private CheckedListBox Coding;
-    private Button button1;
+    private Button ConfirmButton;
   }
 }
