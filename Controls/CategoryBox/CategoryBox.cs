@@ -1,9 +1,10 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using EasySetup.ControllersAndHelpers;
+using Microsoft.Data.Sqlite;
 using System.ComponentModel;
 
 namespace EasySetup
 {
-  public partial class CategoryBox : UserControl
+    public partial class CategoryBox : UserControl
   {
     private string _tableName;
     private string _insertName;

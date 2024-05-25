@@ -1,6 +1,8 @@
-﻿namespace EasySetup
+﻿using EasySetup.ControllersAndHelpers;
+
+namespace EasySetup
 {
-  public partial class AddRowDialog : Form
+    public partial class AddRowDialog : Form
   {
     public event EventHandler WorkCompleted;
     private AddRowDialogEventArgs args = new AddRowDialogEventArgs();

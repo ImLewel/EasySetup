@@ -1,10 +1,11 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using EasySetup.ControllersAndHelpers;
+using Microsoft.Data.Sqlite;
 using System.Diagnostics;
 using System.Security.Permissions;
 
 namespace EasySetup
 {
-  public partial class MainForm : Form
+    public partial class MainForm : Form
   {
     DbContext dbContext;
     string dbFile = "data.db";
