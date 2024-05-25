@@ -15,7 +15,7 @@ namespace EasySetup
       InitializeComponent();
       con = new SqliteConnection($"Data source={dbFile}");
       con.Open();
-      FillData();
+      //FillData();
     }
 
     public void FillData()
@@ -142,6 +142,5 @@ namespace EasySetup
         }
       }
     }
-
   }
 }
