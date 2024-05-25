@@ -182,6 +182,7 @@
       tableContainer.ScrollBars = ScrollBars.None;
       tableContainer.Size = new Size(272, 22);
       tableContainer.TabIndex = 15;
+      tableContainer.CellContentClick += tableContainer_CellContentClick;
       // 
       // selectionColumn
       // 
@@ -255,7 +256,7 @@
     private Button removeBtn;
     private Button editBtn;
     private Button deleteButton;
-    private DataGridView tableContainer;
+    internal DataGridView tableContainer;
     private DataGridViewCheckBoxColumn selectionColumn;
     private DataGridViewTextBoxColumn nameColumn;
     private DataGridViewCheckBoxColumn normalMode;

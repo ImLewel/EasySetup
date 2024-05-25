@@ -9,6 +9,7 @@ namespace EasySetup
     private string _insertName;
     private string _insertLink;
     private DbContext _dbContext;
+    private string _selection = "N";
 
     public CategoryBox()
     {
@@ -53,15 +54,40 @@ namespace EasySetup
       {
         //Insert row
         int index = tableContainer.Rows.Add();
+        InitializeCheckBoxes(index);
         tableContainer.Rows[index].Cells["nameColumn"].Value = _insertName;
         tableContainer.Rows[index].Cells["normalMode"].Value = true;
 
         //Send data to DB
-        //_dbContext.Append(this.SQLiteTableBinding, _insertName, _insertLink);
+        _dbContext.Append(this.SQLiteTableBinding, _insertName, _insertLink);
 
         //Adjust the size of table
         tableContainer.Height += tableContainer.Rows[0].Height;
       }
+    }
+
+    private void InitializeCheckBoxes(int rowIndex)
+    {
+      for (int i = 0; i < tableContainer.Rows[rowIndex].Cells.Count; i++)
+      {
+        var cell = tableContainer.Rows[rowIndex].Cells[i];
+        if (i > 0 && cell is DataGridViewCheckBoxCell)
+        {
+          cell.Value = false;
+        }
+      }
+    }
+
+    internal void AddRowWithName(string nameColumnValue)
+    {
+      //Insert row
+      int index = tableContainer.Rows.Add();
+      InitializeCheckBoxes(index);
+      tableContainer.Rows[index].Cells["nameColumn"].Value = nameColumnValue;
+      tableContainer.Rows[index].Cells["normalMode"].Value = true;
+
+      //Adjust the size of table
+      tableContainer.Height += tableContainer.Rows[0].Height;
     }
 
     private void receiveData(object sender, EventArgs e)
@@ -93,7 +119,7 @@ namespace EasySetup
         //Retrieve row index of currently selected cell
         int rowIndex = tableContainer.CurrentCell.RowIndex;
         //Remove data from DB
-        //_dbContext.Remove(this.SQLiteTableBinding, "Name", tableContainer.Rows[rowIndex].Cells["Name"].Value.ToString());
+        _dbContext.Remove(this.SQLiteTableBinding, "Name", tableContainer.Rows[rowIndex].Cells["nameColumn"].Value.ToString());
         //Reduce the size of table
         tableContainer.Height -= tableContainer.Rows[0].Height;
         //Remove row from table
@@ -110,6 +136,32 @@ namespace EasySetup
     private void editBtn_Click(object sender, EventArgs e)
     {
       //TBA
+    }
+
+    internal string GetSelection() => _selection;
+
+    //Goofy ahh block of code but I can't get how to make it look better
+    private void tableContainer_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    {
+      int rowIndex = e.RowIndex;
+      int columnIndex = e.ColumnIndex;
+
+      var cell = tableContainer.Rows[rowIndex].Cells[columnIndex];
+      if (cell is DataGridViewCheckBoxCell && cell != tableContainer.Rows[rowIndex].Cells["selectionColumn"])
+      {
+        if (cell.Value is (object)false)
+        {
+          InitializeCheckBoxes(rowIndex);
+          cell.Value = true;
+          _selection = tableContainer.Columns[columnIndex].HeaderText;
+        }
+        else
+        {
+          MessageBox.Show("Selection can't be empty!", "Error", MessageBoxButtons.OK);
+          cell.Value = true;
+        }
+      }
+
     }
   }
 }

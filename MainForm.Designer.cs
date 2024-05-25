@@ -39,6 +39,10 @@
       categoryBox4 = new CategoryBox();
       categoryBox5 = new CategoryBox();
       contentFlowLayoutPanel = new FlowLayoutPanel();
+      categoryBox6 = new CategoryBox();
+      categoryBox7 = new CategoryBox();
+      categoryBox8 = new CategoryBox();
+      categoryBox9 = new CategoryBox();
       HeaderPanel.SuspendLayout();
       FooterPanel.SuspendLayout();
       contentFlowLayoutPanel.SuspendLayout();
@@ -192,11 +196,79 @@
       contentFlowLayoutPanel.Controls.Add(categoryBox3);
       contentFlowLayoutPanel.Controls.Add(categoryBox4);
       contentFlowLayoutPanel.Controls.Add(categoryBox1);
+      contentFlowLayoutPanel.Controls.Add(categoryBox6);
+      contentFlowLayoutPanel.Controls.Add(categoryBox7);
+      contentFlowLayoutPanel.Controls.Add(categoryBox8);
+      contentFlowLayoutPanel.Controls.Add(categoryBox9);
       contentFlowLayoutPanel.Dock = DockStyle.Fill;
       contentFlowLayoutPanel.Location = new Point(0, 62);
       contentFlowLayoutPanel.Name = "contentFlowLayoutPanel";
       contentFlowLayoutPanel.Size = new Size(545, 658);
       contentFlowLayoutPanel.TabIndex = 22;
+      // 
+      // categoryBox6
+      // 
+      categoryBox6.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+      categoryBox6.AutoSize = true;
+      categoryBox6.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+      categoryBox6.BackColor = Color.Transparent;
+      categoryBox6.BorderStyle = BorderStyle.Fixed3D;
+      categoryBox6.ForeColor = SystemColors.ControlText;
+      categoryBox6.Location = new Point(6, 416);
+      categoryBox6.Margin = new Padding(6, 6, 25, 20);
+      categoryBox6.Name = "categoryBox6";
+      categoryBox6.Size = new Size(505, 56);
+      categoryBox6.SQLiteTableBinding = "Benchmarks";
+      categoryBox6.TabIndex = 22;
+      categoryBox6.Title = "Benchmarks";
+      // 
+      // categoryBox7
+      // 
+      categoryBox7.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+      categoryBox7.AutoSize = true;
+      categoryBox7.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+      categoryBox7.BackColor = Color.Transparent;
+      categoryBox7.BorderStyle = BorderStyle.Fixed3D;
+      categoryBox7.ForeColor = SystemColors.ControlText;
+      categoryBox7.Location = new Point(6, 498);
+      categoryBox7.Margin = new Padding(6, 6, 25, 20);
+      categoryBox7.Name = "categoryBox7";
+      categoryBox7.Size = new Size(505, 56);
+      categoryBox7.SQLiteTableBinding = "Drivers";
+      categoryBox7.TabIndex = 23;
+      categoryBox7.Title = "Drivers";
+      // 
+      // categoryBox8
+      // 
+      categoryBox8.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+      categoryBox8.AutoSize = true;
+      categoryBox8.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+      categoryBox8.BackColor = Color.Transparent;
+      categoryBox8.BorderStyle = BorderStyle.Fixed3D;
+      categoryBox8.ForeColor = SystemColors.ControlText;
+      categoryBox8.Location = new Point(6, 580);
+      categoryBox8.Margin = new Padding(6, 6, 25, 20);
+      categoryBox8.Name = "categoryBox8";
+      categoryBox8.Size = new Size(505, 56);
+      categoryBox8.SQLiteTableBinding = "Messengers";
+      categoryBox8.TabIndex = 24;
+      categoryBox8.Title = "Walkie Talkie";
+      // 
+      // categoryBox9
+      // 
+      categoryBox9.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+      categoryBox9.AutoSize = true;
+      categoryBox9.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+      categoryBox9.BackColor = Color.Transparent;
+      categoryBox9.BorderStyle = BorderStyle.Fixed3D;
+      categoryBox9.ForeColor = SystemColors.ControlText;
+      categoryBox9.Location = new Point(6, 662);
+      categoryBox9.Margin = new Padding(6, 6, 25, 20);
+      categoryBox9.Name = "categoryBox9";
+      categoryBox9.Size = new Size(505, 56);
+      categoryBox9.SQLiteTableBinding = "Misc";
+      categoryBox9.TabIndex = 25;
+      categoryBox9.Title = "Smth else";
       // 
       // MainForm
       // 
@@ -233,5 +305,9 @@
     private CategoryBox categoryBox4;
     private CategoryBox categoryBox5;
     private FlowLayoutPanel contentFlowLayoutPanel;
+    private CategoryBox categoryBox6;
+    private CategoryBox categoryBox7;
+    private CategoryBox categoryBox8;
+    private CategoryBox categoryBox9;
   }
 }

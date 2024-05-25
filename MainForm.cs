@@ -1,11 +1,12 @@
 ﻿using Microsoft.Data.Sqlite;
 using System.Diagnostics;
+using System.Security.Permissions;
 
 namespace EasySetup
 {
   public partial class MainForm : Form
   {
-    SqliteConnection con;
+    DbContext dbContext;
     string dbFile = "data.db";
     string downloadPath = @"Downloaded\";
     static readonly HttpClient client = new HttpClient();
@@ -13,28 +14,25 @@ namespace EasySetup
     public MainForm()
     {
       InitializeComponent();
-      con = new SqliteConnection($"Data source={dbFile}");
-      con.Open();
-      //FillData();
+      dbContext = new DbContext(dbFile);
+      FillData();
     }
 
-    public void FillData()
+    public async void FillData()
     {
-      var checkedListBoxes = GetAll(this, typeof(CheckedListBox));
-      foreach (var checkedListBox in checkedListBoxes)
+      var categoryBoxes = GetAll(this, typeof(CategoryBox));
+      foreach (var categoryBox in categoryBoxes)
       {
         //Get name of each CheckedBoxList and insert values from respective table with Name column values
-        string query = $"SELECT Name FROM {checkedListBox.Name}";
-        SqliteCommand command = new SqliteCommand(query, con);
-        var result = command.ExecuteReader();
-        var clb = (CheckedListBox)checkedListBox;
+        CategoryBox cb = (CategoryBox)categoryBox;
+        cb.SetConnection(dbContext);
+        SqliteDataReader result = await dbContext.RetrieveColumn(cb.SQLiteTableBinding, "Name");
         if (result.HasRows)
         {
           while (result.Read())
           {
-            clb.Items.Add(result.GetValue(0));
+            cb.AddRowWithName(result.GetValue(0).ToString());
           }
-          clb.Height = (clb.Items.Count + 1) * clb.GetItemRectangle(0).Height;
         }
       }
     }
@@ -75,7 +73,7 @@ namespace EasySetup
 
     }
 
-    private async Task Install(string url, string name)
+    private async Task Install(string url, string name, string mode)
     {
       //Make sure we have download directory
       Directory.CreateDirectory(downloadPath);
@@ -94,9 +92,13 @@ namespace EasySetup
       if (!File.Exists(storedFile))
       {
         await Download(path, storedFile);
-        //For future purpose: ability to specify some arguments
-        //of installation (silent, verbose, etc)
-        string args = String.Empty;
+        string args = (ext == ".exe" ? "/NORESTART" : "/norestart") +
+          mode switch
+          {
+            "N" => String.Empty,
+            "Q" => ext == ".exe" ? " /S" : " /quiet",
+            "M" => ext == ".exe" ? " /SP" : " /passive",
+          };
         try
         {
           Process installProcess = new Process
@@ -120,22 +122,30 @@ namespace EasySetup
 
     private async void ConfirmButton_Click(object sender, EventArgs e)
     {
-      var checkedListBoxes = GetAll(this, typeof(CheckedListBox));
-      foreach (var checkedListBox in checkedListBoxes)
+      var categoryBoxes = GetAll(this, typeof(CategoryBox));
+      foreach (var categoryBox in categoryBoxes)
       {
-        var clb = (CheckedListBox)checkedListBox;
-        foreach (var checkBox in clb.CheckedItems)
+        //Get name of each CheckedBoxList and insert values from respective table with Name column values
+        CategoryBox cb = (CategoryBox)categoryBox;
+        foreach (DataGridViewRow row in cb.tableContainer.Rows)
         {
-          string query = $"SELECT Link FROM {checkedListBox.Name} WHERE Name=@name";
-          using (SqliteCommand command = new SqliteCommand(query, con))
+          if (row.Cells["selectionColumn"].Value is true)
           {
-            command.Parameters.AddWithValue("@name", checkBox.ToString());
-            using (var result = command.ExecuteReader())
+            var name = row.Cells["nameColumn"].Value.ToString();
+            using
+            (
+              SqliteDataReader result = await dbContext.RetrieveColumnWhere(
+              cb.SQLiteTableBinding,
+                "Link",
+                "Name",
+                name
+              )
+            )
             {
               if (result.Read())
               {
                 string link = result.GetString(0);
-                Install(link, checkBox.ToString());
+                await Install(link, name, cb.GetSelection());
               }
             }
           }
